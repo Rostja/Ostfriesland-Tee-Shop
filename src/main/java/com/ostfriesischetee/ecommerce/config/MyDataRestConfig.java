@@ -1,7 +1,9 @@
 package com.ostfriesischetee.ecommerce.config;
 
+import com.ostfriesischetee.ecommerce.entity.Country;
 import com.ostfriesischetee.ecommerce.entity.Product;
 import com.ostfriesischetee.ecommerce.entity.ProductCategory;
+import com.ostfriesischetee.ecommerce.entity.Region;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,11 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
                 .forDomainType(ProductCategory.class)
                 .withItemExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions))
                 .withCollectionExposure(((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions)));
+
+        config.exposeIdsFor(Country.class, Region.class);
+        cors.addMapping("api/**")
+                .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET","POST","PUT","DELETE");
 
         //call an internal helper method
         exposeIds(config);
